@@ -36,6 +36,10 @@ public class MapSwitcher : MonoBehaviour
     }
 
 
+    public Tilemap GetActiveMap()
+    {
+        return _currentMapType;
+    }
 
     public void SwitchTo(MapType mapType)
     {
