@@ -2,32 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using GameplayUtils;
 using UnityEngine;
-using GameplayUtils.TileMapExtension;
-using UnityEngine.Tilemaps;
 
 public class GameloopController : MonoBehaviour
 {
     public Vector2Int PlayerCellPosition;
-    [SerializeField] private InputManager _inputManager;
+    private InputManager _inputManager;
 
-    private MapSwitcher _mapSwitcher;
+    private GridController _selectedGrid;
 
     private Player _player;
 
 
     private bool _gameIsActive = false;
 
+    private void Awake()
+    {
+        _inputManager = FindObjectOfType<InputManager>();
+        _selectedGrid = FindObjectOfType<GridController>();
+        _player = FindObjectOfType<Player>();
+    }
+
 
     private void Start()
     {
         PlayerCellPosition = new Vector2Int(0, 0);
-        _player = FindObjectOfType<Player>();
-        _mapSwitcher = FindObjectOfType<MapSwitcher>();
-        _inputManager = FindObjectOfType<InputManager>();
 
 
-        Tilemap currentTileMap = _mapSwitcher.GetActiveMap();
-        Vector2 newWorldPos = currentTileMap.GetWorldPosFromCellPos(PlayerCellPosition);
+        // Tilemap currentTileMap = _mapSwitcher.GetActiveMap();
+        Vector2 newWorldPos = _selectedGrid.GetWorldPosFromCellPos(PlayerCellPosition);
         _player.UpdatePosition(newWorldPos);
 
         StartLoop();
@@ -50,17 +52,20 @@ public class GameloopController : MonoBehaviour
             return;
 
         Vector2Int newCellPos = PlayerCellPosition + direction;
-        Tilemap currentTileMap = _mapSwitcher.GetActiveMap();
+
 
         Debug.Log("Moving to " + newCellPos);
 
-        if (currentTileMap.IsCellPosOutOfBounds(newCellPos))
+        if (_selectedGrid.CheckIfCanMoveToPosition(newCellPos))
+        {
+            Debug.Log("Can't move to " + newCellPos);
             return;
+        }
 
 
         PlayerCellPosition = newCellPos;
 
-        Vector2 newWorldPos = currentTileMap.GetWorldPosFromCellPos(newCellPos);
+        Vector2 newWorldPos = _selectedGrid.GetWorldPosFromCellPos(newCellPos);
         _player.UpdatePosition(newWorldPos);
     }
 

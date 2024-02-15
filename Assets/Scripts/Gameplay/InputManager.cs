@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public System.Action<Vector2Int> OnMoveInput;
+    public event System.Action<Vector2Int> OnMoveInput;
 
     private void Update()
     {

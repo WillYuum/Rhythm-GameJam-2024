@@ -20,9 +20,9 @@ public class MapSwitcher : MonoBehaviour
 
     private void Awake()
     {
-        _currentMapType = _robotMap;
-        _beachMap.gameObject.SetActive(false);
-        _robotMap.gameObject.SetActive(false);
+        // _currentMapType = _robotMap;
+        // _beachMap.gameObject.SetActive(false);
+        // _robotMap.gameObject.SetActive(false);
     }
 
     void Update()
