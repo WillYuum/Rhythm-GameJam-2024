@@ -5,13 +5,12 @@ using UnityEngine;
 public class RhythmController : MonoBehaviour
 {
     public int CurrentLayer { get; private set; } = 1;
-    private FMODUnity.StudioBankLoader _bankLoader;
-    private string _bankName = "Master";
-    private string _eventName = "event:/main_song";
+
+    private FMODUnity.StudioEventEmitter _songEmitter;
 
     private void Awake()
     {
-
+        _songEmitter = GetComponent<FMODUnity.StudioEventEmitter>();
     }
 
     private void Update()
@@ -36,11 +35,15 @@ public class RhythmController : MonoBehaviour
 
     public void ToggleMusic(bool value)
     {
-        FMODUnity.RuntimeManager.GetBus("bus:/main_song").setPaused(value);
+        switch (value)
+        {
+            case true:
+                _songEmitter.Play();
+                break;
+            case false:
+                _songEmitter.Stop();
+                break;
+        }
     }
 
-    public void Play()
-    {
-        FMODUnity.RuntimeManager.PlayOneShot("event:/main_song");
-    }
 }

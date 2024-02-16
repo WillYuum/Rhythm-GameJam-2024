@@ -66,7 +66,7 @@ public class GameloopController : MonoBehaviour
         _inputManager.OnMoveInput += MovePlayer;
         _inputManager.Toggle(true);
 
-        _rhythmController.Play();
+        _rhythmController.ToggleMusic(true);
         _rhythmController.SetCurrentLayer(1);
 
     }
