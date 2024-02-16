@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{e4f9e565-369d-4c69-89c1-ea326be78ce0}">
+		<property name="assetPath">
+			<value>Apoxode_-_Climate_Shift_(Apoxode_s_version)_1.flac</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>224</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{3185e094-32d2-4900-9514-06d8531ff102}</destination>
+		</relationship>
+	</object>
+</objects>
