@@ -10,7 +10,6 @@ public class ScaleObjectsOnBeat : MonoBehaviour
 
     [SerializeField] public List<Transform> objectsToScale;
     [SerializeField] public float scaleMultiplier = 3f;
-    [SerializeField] public float scaleDownDuration = 0.5f;
 
 
     void Start()
@@ -41,6 +40,7 @@ public class ScaleObjectsOnBeat : MonoBehaviour
 
     private void ScaleObjects()
     {
+        float scaleDownDuration = _beatDetector.BeatInterval / 2;
         foreach (Transform obj in objectsToScale)
         {
             obj.DOKill();
