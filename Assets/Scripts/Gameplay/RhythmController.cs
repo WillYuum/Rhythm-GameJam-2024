@@ -13,6 +13,11 @@ public class RhythmController : MonoBehaviour
         _songEmitter = GetComponent<FMODUnity.StudioEventEmitter>();
     }
 
+    private void Start()
+    {
+        GetComponent<BeatDetector>().enabled = true;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -44,6 +49,9 @@ public class RhythmController : MonoBehaviour
                 _songEmitter.Stop();
                 break;
         }
+
+
+        GetComponent<BeatDetector>().enabled = value;
     }
 
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using GameplayUtils;
 using UnityEngine;
 
@@ -77,6 +78,16 @@ public class GameloopController : MonoBehaviour
     {
         if (!_gameIsActive)
             return;
+
+
+        BeatDetector beatDetector = _rhythmController.GetComponent<BeatDetector>();
+
+
+        if (!beatDetector.CheckIfAroundABeat(0.25f, 1.65f))
+        {
+            Debug.Log("Not near a beat");
+            return;
+        }
 
         Vector2Int newCellPos = PlayerCellPosition + direction;
 
