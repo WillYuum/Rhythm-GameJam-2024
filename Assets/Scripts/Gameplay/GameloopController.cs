@@ -116,7 +116,7 @@ public class GameloopController : MonoBehaviour
             return;
 
 
-        TransitionRoomDetector transitionRoomDetector = _selectedGrid.GetComponent<TransitionRoomDetector>();
+        TransitionRoomDetector transitionRoomDetector = _rhythmController.GetComponent<TransitionRoomDetector>();
 
         if (transitionRoomDetector.InvokeTryingToTransition())
         {
