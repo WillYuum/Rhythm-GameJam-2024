@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using GameplayUtils;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class GameloopController : MonoBehaviour
@@ -65,6 +66,7 @@ public class GameloopController : MonoBehaviour
 
         _gameIsActive = true;
         _inputManager.OnMoveInput += MovePlayer;
+        _inputManager.OnClickTransition += HandlePlayerClickTransition;
         _inputManager.Toggle(true);
 
         _rhythmController.ToggleMusic(true);
@@ -105,6 +107,28 @@ public class GameloopController : MonoBehaviour
 
         Vector2 newWorldPos = _selectedGrid.GetWorldPosFromCellPos(newCellPos);
         _player.UpdatePosition(newWorldPos);
+    }
+
+
+    private void HandlePlayerClickTransition()
+    {
+        if (!_gameIsActive)
+            return;
+
+
+        TransitionRoomDetector transitionRoomDetector = _selectedGrid.GetComponent<TransitionRoomDetector>();
+
+        if (transitionRoomDetector.InvokeTryingToTransition())
+        {
+            BeatDetector beatDetector = _rhythmController.GetComponent<BeatDetector>();
+            bool clickedNearBeat = beatDetector.CheckIfAroundABeat(0.25f, 1.65f);
+
+            if (clickedNearBeat)
+            {
+                Debug.Log("Transitioning to next room");
+            }
+        }
+
     }
 
 

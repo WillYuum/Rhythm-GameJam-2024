@@ -386,6 +386,7 @@ GameObject:
   - component: {fileID: 909804661}
   - component: {fileID: 909804663}
   - component: {fileID: 909804664}
+  - component: {fileID: 909804665}
   m_Layer: 0
   m_Name: RhythmController
   m_TagString: Untagged
@@ -466,6 +467,18 @@ MonoBehaviour:
   SongBPM: 0
   SongPosition: 0
   BeatInterval: 0
+--- !u!114 &909804665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909804660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4985e4a36d7dad848965733180d995c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &963830045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1615,7 +1628,6 @@ MonoBehaviour:
   objectsToScale:
   - {fileID: 351692330}
   scaleMultiplier: 3
-  scaleDownDuration: 0.5
 --- !u!1 &1794263933
 GameObject:
   m_ObjectHideFlags: 0

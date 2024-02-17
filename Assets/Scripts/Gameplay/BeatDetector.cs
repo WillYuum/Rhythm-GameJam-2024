@@ -49,7 +49,7 @@ public class BeatDetector : MonoBehaviour
     }
 
     /// <summary>
-    /// Check if the current time is around a beat
+    /// Check if the current time is around the next beat
     /// <para>
     /// If the value is 0.5, it will check half before a beat duration.
     /// If the value is 1, it will check the exact beat duration.
