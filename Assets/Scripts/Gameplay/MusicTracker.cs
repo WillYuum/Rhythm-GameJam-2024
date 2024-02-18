@@ -28,13 +28,13 @@ public class MusicTracker : MonoBehaviour
     public double BeatInterval = 0f; // This is the time between each beat;
     private double lastBeatInterval = 0f; // This is the previous time between each beat. It's what the "beatInterval" was before a tempo change.
 
-    private bool justHitBeat = false;
+    static bool justHitBeat = false;
 
     private double tempoTrackDSPStartTime;
 
-    private string markerString = "";
-    private bool justHitMarker = false;
-    private int markerTime;
+    static string markerString = "";
+    static bool justHitMarker = false;
+    static int markerTime;
 
     public delegate void BeatEventDelegate();
     public event BeatEventDelegate fixedBeatUpdate; // Subscribe any function you wan't to happen on the down beat to this event! DON'T FORGET TO UNSUBSCRIBE BEFORE DESTROYING YOU GAMEOBJECTS!
@@ -335,7 +335,7 @@ public class MusicTracker : MonoBehaviour
     }
 
     [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
-    private FMOD.RESULT BeatEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
+    static FMOD.RESULT BeatEventCallback(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
     {
         FMOD.Studio.EventInstance instance = new FMOD.Studio.EventInstance(instancePtr);
 
