@@ -10,7 +10,16 @@ public class GameloopController : MonoBehaviour
     public Vector2Int PlayerCellPosition;
     private InputManager _inputManager;
     private RhythmController _rhythmController;
-    private int _currentRoomLevel = 1;
+    private int _currentRoomLevel;
+    public int CurrentRoomLevel
+    {
+        get => _currentRoomLevel;
+        set
+        {
+            _currentRoomLevel = value;
+            _rhythmController.SetCurrentLayer(value);
+        }
+    }
 
     private GridController _selectedGrid;
 
@@ -41,14 +50,6 @@ public class GameloopController : MonoBehaviour
     private void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            _rhythmController.SetCurrentLayer(_rhythmController.CurrentLayer + 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.K))
-        {
-            _rhythmController.SetCurrentLayer(_rhythmController.CurrentLayer - 1);
-        }
     }
 
     public void StartLoop()
@@ -68,9 +69,9 @@ public class GameloopController : MonoBehaviour
 
         _rhythmController.LoadMusic();
         _rhythmController.ToggleMusic(true);
-        _rhythmController.SetCurrentLayer(1);
+        CurrentRoomLevel = 1;
 
-        _selectedGrid.BuildUpObjectsInRoom(_currentRoomLevel - 1);
+        _selectedGrid.BuildUpObjectsInRoom(CurrentRoomLevel);
     }
 
 
@@ -127,7 +128,26 @@ public class GameloopController : MonoBehaviour
         if (transitionRoomDetector.CheckIfOnTransitionBeat())
         {
             //Handle logic for checking if player clicked near beat when transition queue is played
-        }
+            // Debug.Break();
+            CurrentRoomLevel++;
+            _selectedGrid.BuildUpObjectsInRoom(CurrentRoomLevel);
 
+
+            bool currentRoomIsLast = _selectedGrid.CurrentRoomIsLastRoom(CurrentRoomLevel);
+            if (currentRoomIsLast)
+            {
+                Debug.Log("Last room");
+                WinGame();
+            }
+        }
+    }
+
+
+
+    private void WinGame()
+    {
+        _gameIsActive = false;
+        _inputManager.Toggle(false);
+        _rhythmController.ToggleMusic(false);
     }
 }

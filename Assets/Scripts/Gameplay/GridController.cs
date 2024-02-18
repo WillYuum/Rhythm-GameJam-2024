@@ -31,12 +31,24 @@ public class GridController : MonoBehaviour
     }
 
 
-
-    public void BuildUpObjectsInRoom(int roomIndex)
+    public bool CurrentRoomIsLastRoom(int currentRoomNumber)
     {
+        int roomIndex = currentRoomNumber - 1;
+        return roomIndex == _roomsData.AllRooms.Length;
+    }
+
+
+    public void BuildUpObjectsInRoom(int roomNumber)
+    {
+        int roomIndex = roomNumber - 1;
         if (roomIndex < 0 || roomIndex >= _roomsData.AllRooms.Length)
         {
             Debug.LogError("|GridController| Room index out of bounds");
+            return;
+        }
+
+        if (CurrentRoomIsLastRoom(roomNumber))
+        {
             return;
         }
 

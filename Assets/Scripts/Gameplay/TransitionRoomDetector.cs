@@ -8,10 +8,17 @@ public class TransitionRoomDetector : MonoBehaviour
 
     private int _beatCount = 0;
     private int _beatCountToTransition = 4;
+    private MusicTracker _musicTracker;
 
     void Awake()
     {
+        _musicTracker = GetComponent<MusicTracker>();
+    }
 
+
+    void Start()
+    {
+        _musicTracker.fixedBeatUpdate += HandleBeat;
     }
 
 
@@ -38,6 +45,8 @@ public class TransitionRoomDetector : MonoBehaviour
 
     public bool CheckIfOnTransitionBeat()
     {
-        return _beatCount == _beatCountToTransition;
+        bool isOnBeat = _beatCount == _beatCountToTransition;
+
+        return isOnBeat && _musicTracker.CheckIfInBeatWindow(0.85f, 1.15f);
     }
 }
