@@ -9,7 +9,7 @@ public class EnemyFollowAndDance : MonoBehaviour
 
     private int beatsPassed = 0;
     private int beatsUntilDance = 7; // Perform a dance every 3 beats
-    private int _beatUntilMove = 2; // Move every beat
+    private int _beatUntilMove = 1; // Move every beat
 
     private bool _isDancing = false;
 
