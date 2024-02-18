@@ -132,7 +132,7 @@ public class GameloopController : MonoBehaviour
 
         TransitionRoomDetector transitionRoomDetector = _rhythmController.GetComponent<TransitionRoomDetector>();
 
-        if (transitionRoomDetector.CheckIfOnTransitionBeat())
+        if (transitionRoomDetector.CheckIfOnTransitionBeat() && CheckIfPlayerIsOnExitDoor())
         {
             //Handle logic for checking if player clicked near beat when transition queue is played
             // Debug.Break();
@@ -147,6 +147,27 @@ public class GameloopController : MonoBehaviour
                 WinGame();
             }
         }
+    }
+
+
+    private bool CheckIfPlayerIsOnExitDoor()
+    {
+        if (!_gameIsActive)
+            return false;
+
+        Vector2Int playerCellPos = PlayerCellPosition;
+
+        for (int i = 0; i < _selectedGrid.CurrentRoomData.DoorsToExitPositions.Length; i++)
+        {
+            Vector2Int exitDoorPos = _selectedGrid.CurrentRoomData.DoorsToExitPositions[i];
+            if (playerCellPos == exitDoorPos)
+            {
+                return true;
+            }
+        }
+
+
+        return false;
     }
 
 

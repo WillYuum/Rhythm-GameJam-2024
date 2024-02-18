@@ -7,6 +7,7 @@ public class GridController : MonoBehaviour
 {
     [SerializeField] private Tilemap _activeTilemap;
     private RoomSpawnManager _roomSpawnManager;
+    public RoomsData.RoomData CurrentRoomData { get; private set; }
 
     [SerializeField] private Transform _spawnedObjectsParent;
 
@@ -98,6 +99,8 @@ public class GridController : MonoBehaviour
                 obstaclePrefab.CreateGameObject(_activeTilemap.GetWorldPosFromCellPos(obstaclePos), Quaternion.identity, _spawnedObjectsParent);
             }
         }
+
+        CurrentRoomData = roomData;
     }
 
 
