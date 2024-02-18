@@ -30,6 +30,11 @@ public class GridController : MonoBehaviour
         return _activeTilemap.GetWorldPosFromCellPos(cellPos);
     }
 
+    public Vector2Int GetCellPosFromWorldPos(Vector2 worldPos)
+    {
+        return _activeTilemap.GetCellPosFromWorldPos(worldPos);
+    }
+
 
     public bool CurrentRoomIsLastRoom(int currentRoomNumber)
     {
@@ -62,6 +67,9 @@ public class GridController : MonoBehaviour
         var enemyPrefab = _roomSpawnManager.EnemyPrefab;
         var obstaclePrefab = _roomSpawnManager.ObstaclePrefab;
 
+
+        MusicTracker musicTracker = FindObjectOfType<MusicTracker>();
+
         if (roomData.DoorsToExitPositions != null)
         {
             foreach (Vector2Int doorPos in roomData.DoorsToExitPositions)
@@ -77,7 +85,8 @@ public class GridController : MonoBehaviour
             foreach (var enemyPos in roomData.EnemyPositions)
             {
                 Debug.Log($"Enemy at {enemyPos}");
-                enemyPrefab.CreateGameObject(_activeTilemap.GetWorldPosFromCellPos(enemyPos), Quaternion.identity, _spawnedObjectsParent);
+                GameObject enemy = enemyPrefab.CreateGameObject(_activeTilemap.GetWorldPosFromCellPos(enemyPos), Quaternion.identity, _spawnedObjectsParent);
+                enemy.GetComponent<EnemyFollowAndDance>().Prepare(musicTracker, this);
             }
         }
 

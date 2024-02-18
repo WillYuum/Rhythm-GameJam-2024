@@ -14,5 +14,10 @@ namespace GameplayUtils.TileMapExtension
         {
             return tileMap.GetCellCenterWorld((Vector3Int)cellPos);
         }
+
+        public static Vector2Int GetCellPosFromWorldPos(this Tilemap tileMap, Vector2 worldPos)
+        {
+            return (Vector2Int)tileMap.WorldToCell(worldPos);
+        }
     }
 }
