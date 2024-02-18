@@ -225,7 +225,7 @@ public class MusicTracker : MonoBehaviour
     }
 
 
-    public bool CheckIfInBeatWindow(float beforeBeatRatio, float afterBeatRatio)
+    public bool IsWithinBeatWindow(float percentageBeforeBeat, float percentageAfterBeat)
     {
         if (lastFixedBeatTime == 0f)
         {
@@ -235,12 +235,12 @@ public class MusicTracker : MonoBehaviour
         float fixedSongPosition = (float)(currentTime - tempoTrackDSPStartTime);
         float timeSinceLastBeat = fixedSongPosition - (float)lastFixedBeatTime;
 
-        if (timeSinceLastBeat < (float)BeatInterval * beforeBeatRatio || timeSinceLastBeat > (float)BeatInterval * afterBeatRatio)
-        {
-            return false;
-        }
+        float beforeBeatWindow = (float)BeatInterval * percentageBeforeBeat;
+        float afterBeatWindow = (float)BeatInterval * percentageAfterBeat;
 
-        return true;
+        bool isWithinWindow = timeSinceLastBeat >= -beforeBeatWindow && timeSinceLastBeat <= afterBeatWindow;
+
+        return isWithinWindow;
     }
 
     private float UpBeatPosition()

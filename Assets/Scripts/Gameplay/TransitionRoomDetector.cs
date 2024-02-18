@@ -34,7 +34,12 @@ public class TransitionRoomDetector : MonoBehaviour
 
         if (_beatCount == _beatCountToTransition)
         {
+            CanTransition = true;
             FMODUnity.RuntimeManager.PlayOneShot("event:/cue");
+        }
+        else
+        {
+            CanTransition = false;
         }
 
         if (_beatCount == _beatCountToTransition - 1)
@@ -45,8 +50,8 @@ public class TransitionRoomDetector : MonoBehaviour
 
     public bool CheckIfOnTransitionBeat()
     {
-        bool isOnBeat = _beatCount == _beatCountToTransition;
+        bool isOnBeat = CanTransition;
 
-        return isOnBeat && _musicTracker.CheckIfInBeatWindow(0.85f, 1.15f);
+        return isOnBeat && _musicTracker.IsWithinBeatWindow(0.85f, 0.85f);
     }
 }

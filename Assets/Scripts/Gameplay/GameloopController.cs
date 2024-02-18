@@ -85,10 +85,9 @@ public class GameloopController : MonoBehaviour
             return;
 
 
-        // BeatDetector beatDetector = _rhythmController.GetComponent<BeatDetector>();
         MusicTracker beatTracker_V2 = FindObjectOfType<MusicTracker>();
 
-        bool clickedAroundBeat = beatTracker_V2.CheckIfInBeatWindow(0.25f, 0.45f);
+        bool clickedAroundBeat = beatTracker_V2.IsWithinBeatWindow(0.85f, 0.5f);
         if (!clickedAroundBeat)
         {
             Debug.Log("Not near a beat");
