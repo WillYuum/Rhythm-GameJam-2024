@@ -136,7 +136,6 @@ public class GameloopController : MonoBehaviour
             //Handle logic for checking if player clicked near beat when transition queue is played
             // Debug.Break();
             CurrentRoomLevel++;
-            _selectedGrid.BuildUpObjectsInRoom(CurrentRoomLevel);
 
 
             bool currentRoomIsLast = _selectedGrid.CurrentRoomIsLastRoom(CurrentRoomLevel);
@@ -144,6 +143,10 @@ public class GameloopController : MonoBehaviour
             {
                 Debug.Log("Last room");
                 WinGame();
+            }
+            else
+            {
+                _selectedGrid.BuildUpObjectsInRoom(CurrentRoomLevel);
             }
         }
     }
