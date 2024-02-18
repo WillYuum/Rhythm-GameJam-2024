@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{cf175067-4782-4e60-ab46-564ef55d5629}">
+		<property name="assetPath">
+			<value>RGJ-Stem4.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>211.19999999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{3185e094-32d2-4900-9514-06d8531ff102}</destination>
+		</relationship>
+	</object>
+</objects>
