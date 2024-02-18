@@ -43,4 +43,10 @@ public class RhythmController : MonoBehaviour
         }
     }
 
+    public void PlayEndGameMusic()
+    {
+        string endGameEvent = "event:/end_game";
+        FMODUnity.RuntimeManager.PlayOneShot(endGameEvent);
+    }
+
 }

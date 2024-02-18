@@ -153,9 +153,13 @@ public class GameloopController : MonoBehaviour
 
     private void WinGame()
     {
+        if (!_gameIsActive)
+            return;
+
         _gameIsActive = false;
         _inputManager.Toggle(false);
         _rhythmController.ToggleMusic(false);
+
         _mainGameUI.ShowEndGameScreen();
     }
 }
