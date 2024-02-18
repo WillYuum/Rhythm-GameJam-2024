@@ -199,5 +199,6 @@ public class GameloopController : MonoBehaviour
         _rhythmController.ToggleMusic(false);
 
         _mainGameUI.ShowEndGameScreen();
+        _rhythmController.PlayEndGameMusic();
     }
 }
