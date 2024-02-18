@@ -7,7 +7,7 @@ public class TransitionRoomDetector : MonoBehaviour
 
 
     private int _beatCount = 0;
-    private int _beatCountToTransition = 4;
+    private int _beatCountToTransition = 5;
     private MusicTracker _musicTracker;
 
     void Awake()
