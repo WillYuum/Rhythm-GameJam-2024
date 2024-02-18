@@ -133,7 +133,7 @@ public class RoomsData
         AllRooms = new RoomData[]{
             new () {
                 DoorsToExitPositions = new Vector2Int[]{
-                    new Vector2Int(0, 0)
+                    new Vector2Int(-2, 0)
                 },
                 EnemyPositions = null,
                 ObstaclePositions = null,
@@ -141,11 +141,11 @@ public class RoomsData
             new()
             {
                 DoorsToExitPositions = new Vector2Int[]{
-                    new Vector2Int(0, 0)
+                    new Vector2Int(-2, -2)
                 },
                 EnemyPositions = new Vector2Int[]
                 {
-                    new Vector2Int(2, 2)
+                    new Vector2Int(0, 3)
                 },
                 ObstaclePositions = null,
             },
