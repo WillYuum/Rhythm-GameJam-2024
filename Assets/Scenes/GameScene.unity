@@ -299,6 +299,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1631098628}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &495526587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 495526588}
+  m_Layer: 0
+  m_Name: SpawnedObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &495526588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495526587}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 819043214}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &819043211
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,6 +342,7 @@ GameObject:
   - component: {fileID: 819043213}
   - component: {fileID: 819043212}
   - component: {fileID: 819043215}
+  - component: {fileID: 819043216}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -359,6 +391,7 @@ Transform:
   m_Children:
   - {fileID: 1609728271}
   - {fileID: 963830048}
+  - {fileID: 495526588}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &819043215
@@ -374,6 +407,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _activeTilemap: {fileID: 1609728269}
+  _spawnedObjectsParent: {fileID: 495526588}
+--- !u!114 &819043216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819043211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf459b6f71760f42bd0bd733f0e8c4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DoorExitPrefab:
+    _prefab: {fileID: 1459866951885568, guid: 2d7262d12ca4aef438c3bc79841bfe8d, type: 3}
+  EnemyPrefab:
+    _prefab: {fileID: 5067896464537272234, guid: e1d14852fe6beda4fa65b85888e14286, type: 3}
+  ObstaclePrefab:
+    _prefab: {fileID: 7779234451126664401, guid: 5dbb9892eb364634994d66972aacd86a, type: 3}
 --- !u!1 &909804660
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,9 +436,8 @@ GameObject:
   m_Component:
   - component: {fileID: 909804662}
   - component: {fileID: 909804661}
-  - component: {fileID: 909804663}
-  - component: {fileID: 909804664}
   - component: {fileID: 909804665}
+  - component: {fileID: 909804666}
   m_Layer: 0
   m_Name: RhythmController
   m_TagString: Untagged
@@ -401,7 +452,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909804660}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f814e88c35484594db9680ec83b1a17a, type: 3}
   m_Name: 
@@ -421,52 +472,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &909804663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909804660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: -375319750
-      Data2: 1241270250
-      Data3: -141163358
-      Data4: -52361103
-    Path: event:/main_song
-  Event: 
-  PlayEvent: 0
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  AllowNonRigidbodyDoppler: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!114 &909804664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 909804660}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e921f75514c8ba42ac5d35720a10386, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SongBPM: 0
-  SongPosition: 0
-  BeatInterval: 0
 --- !u!114 &909804665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,6 +484,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4985e4a36d7dad848965733180d995c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &909804666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 909804660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 187da8d3e57a3074190cc7ff77554ed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upBeatDivisor: 2
+  BeatInterval: 0
+  _music:
+    Guid:
+      Data1: -375319750
+      Data2: 1241270250
+      Data3: -141163358
+      Data4: -52361103
+    Path: event:/main_song
 --- !u!1 &963830045
 GameObject:
   m_ObjectHideFlags: 0

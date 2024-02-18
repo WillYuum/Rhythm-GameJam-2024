@@ -10,6 +10,7 @@ public class GameloopController : MonoBehaviour
     public Vector2Int PlayerCellPosition;
     private InputManager _inputManager;
     private RhythmController _rhythmController;
+    private int _currentRoomLevel = 1;
 
     private GridController _selectedGrid;
 
@@ -39,12 +40,6 @@ public class GameloopController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            _rhythmController.ToggleMusic(!_gameIsActive);
-            _gameIsActive = !_gameIsActive;
-        }
-
 
         if (Input.GetKeyDown(KeyCode.L))
         {
@@ -64,14 +59,18 @@ public class GameloopController : MonoBehaviour
             return;
         }
 
+        print("|GameLoopController| Starting game loop");
+
         _gameIsActive = true;
         _inputManager.OnMoveInput += MovePlayer;
         _inputManager.OnClickTransition += HandlePlayerClickTransition;
         _inputManager.Toggle(true);
 
+        _rhythmController.LoadMusic();
         _rhythmController.ToggleMusic(true);
         _rhythmController.SetCurrentLayer(1);
 
+        _selectedGrid.BuildUpObjectsInRoom(_currentRoomLevel - 1);
     }
 
 
@@ -82,10 +81,11 @@ public class GameloopController : MonoBehaviour
             return;
 
 
-        BeatDetector beatDetector = _rhythmController.GetComponent<BeatDetector>();
+        // BeatDetector beatDetector = _rhythmController.GetComponent<BeatDetector>();
+        MusicTracker beatTracker_V2 = FindObjectOfType<MusicTracker>();
 
 
-        if (!beatDetector.CheckIfAroundABeat(0.25f, 1.65f))
+        if (!beatTracker_V2.CheckIfInBeatWindow(0.25f, 1.65f))
         {
             Debug.Log("Not near a beat");
             return;
@@ -109,6 +109,12 @@ public class GameloopController : MonoBehaviour
         _player.UpdatePosition(newWorldPos);
     }
 
+    private void OnGUI()
+    {
+        //draw the player pos
+        GUI.Label(new Rect(10, 10, 100, 20), "Player pos: " + PlayerCellPosition.x + " " + PlayerCellPosition.y);
+    }
+
 
     private void HandlePlayerClickTransition()
     {
@@ -118,18 +124,10 @@ public class GameloopController : MonoBehaviour
 
         TransitionRoomDetector transitionRoomDetector = _rhythmController.GetComponent<TransitionRoomDetector>();
 
-        if (transitionRoomDetector.InvokeTryingToTransition())
+        if (transitionRoomDetector.CheckIfOnTransitionBeat())
         {
-            BeatDetector beatDetector = _rhythmController.GetComponent<BeatDetector>();
-            bool clickedNearBeat = beatDetector.CheckIfAroundABeat(0.25f, 1.65f);
-
-            if (clickedNearBeat)
-            {
-                Debug.Log("Transitioning to next room");
-            }
+            //Handle logic for checking if player clicked near beat when transition queue is played
         }
 
     }
-
-
 }

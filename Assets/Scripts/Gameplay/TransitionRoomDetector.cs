@@ -4,30 +4,39 @@ using UnityEngine;
 
 public class TransitionRoomDetector : MonoBehaviour
 {
-    private BeatDetector _beatDetector;
+
 
     private int _beatCount = 0;
     private int _beatCountToTransition = 4;
 
     void Awake()
     {
-        _beatDetector = GetComponent<BeatDetector>();
 
-        _beatDetector.OnBeat += HandleBeat;
     }
 
+
+    public bool CanTransition { get; private set; } = false;
 
     private void HandleBeat()
     {
         _beatCount++;
-        if (_beatCount == _beatCountToTransition)
+        if (_beatCount > _beatCountToTransition)
         {
             _beatCount = 0;
+        }
+
+        if (_beatCount == _beatCountToTransition)
+        {
             FMODUnity.RuntimeManager.PlayOneShot("event:/ping_me");
+        }
+
+        if (_beatCount == _beatCountToTransition - 1)
+        {
+
         }
     }
 
-    public bool InvokeTryingToTransition()
+    public bool CheckIfOnTransitionBeat()
     {
         return _beatCount == _beatCountToTransition;
     }

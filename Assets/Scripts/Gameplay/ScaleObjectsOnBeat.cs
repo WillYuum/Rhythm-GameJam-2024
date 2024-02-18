@@ -6,7 +6,7 @@ using DG.Tweening;
 public class ScaleObjectsOnBeat : MonoBehaviour
 {
     private Vector3 originalScale;
-    private BeatDetector _beatDetector;
+    private MusicTracker _currentMusicTracker;
 
     [SerializeField] public List<Transform> objectsToScale;
     [SerializeField] public float scaleMultiplier = 3f;
@@ -20,16 +20,10 @@ public class ScaleObjectsOnBeat : MonoBehaviour
             originalScale = objectsToScale[0].localScale;
         }
 
-        _beatDetector = FindObjectOfType<BeatDetector>();
-        if (_beatDetector != null)
-        {
-            print("Subscribing to OnBeat event");
-            _beatDetector.OnBeat += OnBeatHandler;
-        }
-        else
-        {
-            Debug.LogError("Conductor is null");
-        }
+
+        _currentMusicTracker = FindObjectOfType<MusicTracker>();
+        _currentMusicTracker.fixedBeatUpdate += OnBeatHandler;
+
     }
 
 
@@ -40,7 +34,7 @@ public class ScaleObjectsOnBeat : MonoBehaviour
 
     private void ScaleObjects()
     {
-        float scaleDownDuration = _beatDetector.BeatInterval / 2;
+        float scaleDownDuration = (float)_currentMusicTracker.BeatInterval;
         foreach (Transform obj in objectsToScale)
         {
             obj.DOKill();

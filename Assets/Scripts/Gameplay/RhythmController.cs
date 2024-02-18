@@ -6,21 +6,11 @@ public class RhythmController : MonoBehaviour
 {
     public int CurrentLayer { get; private set; } = 1;
 
-    private FMODUnity.StudioEventEmitter _songEmitter;
+    private MusicTracker _musicTracker;
 
     private void Awake()
     {
-        _songEmitter = GetComponent<FMODUnity.StudioEventEmitter>();
-    }
-
-    private void Start()
-    {
-        GetComponent<BeatDetector>().enabled = true;
-    }
-
-    private void Update()
-    {
-
+        _musicTracker = GetComponent<MusicTracker>();
     }
 
 
@@ -35,20 +25,22 @@ public class RhythmController : MonoBehaviour
         FMODUnity.RuntimeManager.StudioSystem.setParameterByName("CurrentNumLayer", CurrentLayer);
     }
 
+    public void LoadMusic()
+    {
+        _musicTracker.Load();
+    }
+
     public void ToggleMusic(bool value)
     {
         switch (value)
         {
             case true:
-                _songEmitter.Play();
+                _musicTracker.StartMusic();
                 break;
             case false:
-                _songEmitter.Stop();
+                _musicTracker.StopMusic();
                 break;
         }
-
-
-        GetComponent<BeatDetector>().enabled = value;
     }
 
 }

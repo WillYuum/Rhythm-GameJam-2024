@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviourSingleton<MonoBehaviour>
     [SerializeField] private FMODUnity.StudioBankLoader _bankLoader;
 
 
+    public event System.Action OnCloseGame;
+
+
     private GameStarter _gameStarter;
     private void Awake()
     {
@@ -26,8 +29,14 @@ public class GameManager : MonoBehaviourSingleton<MonoBehaviour>
         Debug.Log("|GameManager|: Bank loaded: " + bankName);
 
         callback.Invoke();
-
     }
+
+    private void OnDestroy()
+    {
+        OnCloseGame?.Invoke();
+        OnCloseGame = null;
+    }
+
 
 }
 
