@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditorInternal;
 
 public class EnemyFollowAndDance : MonoBehaviour
 {
@@ -9,7 +8,8 @@ public class EnemyFollowAndDance : MonoBehaviour
     private int currentDanceStepIndex = 0;
 
     private int beatsPassed = 0;
-    private int beatsUntilDance = 5; // Perform a dance every 3 beats
+    private int beatsUntilDance = 7; // Perform a dance every 3 beats
+    private int _beatUntilMove = 2; // Move every beat
 
     private bool _isDancing = false;
 
@@ -90,18 +90,21 @@ public class EnemyFollowAndDance : MonoBehaviour
         }
         else
         {
-            // Chase the player on every beat when not dancing
-            Vector2Int currentPosition = _gridController.GetCellPosFromWorldPos(transform.position);
+            if (beatsPassed % _beatUntilMove == 0)
+            {
+                // Chase the player on every beat when not dancing
+                Vector2Int currentPosition = _gridController.GetCellPosFromWorldPos(transform.position);
 
-            Vector2Int playerPosition = _gridController.GetCellPosFromWorldPos(_target.position);
+                Vector2Int playerPosition = _gridController.GetCellPosFromWorldPos(_target.position);
 
-            // Calculate the direction to move towards the player
-            Vector2Int directionToPlayer = CalculateDirectionToPlayer(currentPosition, playerPosition);
+                // Calculate the direction to move towards the player
+                Vector2Int directionToPlayer = CalculateDirectionToPlayer(currentPosition, playerPosition);
 
-            // Calculate the next position based on the direction
-            Vector2Int nextPos = currentPosition + directionToPlayer;
+                // Calculate the next position based on the direction
+                Vector2Int nextPos = currentPosition + directionToPlayer;
 
-            HandleMove(nextPos);
+                HandleMove(nextPos);
+            }
         }
     }
 
@@ -175,4 +178,5 @@ public class EnemyFollowAndDance : MonoBehaviour
 
         return directionToPlayer;
     }
+
 }

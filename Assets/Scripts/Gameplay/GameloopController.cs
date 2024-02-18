@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using GameplayUtils;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class GameloopController : MonoBehaviour
@@ -115,9 +114,9 @@ public class GameloopController : MonoBehaviour
         //draw the player pos
         // GUI.Label(new Rect(10, 10, 100, 20), "Player pos: " + PlayerCellPosition.x + " " + PlayerCellPosition.y);
 
-        // string playerPos = "Player pos: " + PlayerCellPosition.x + " " + PlayerCellPosition.y;
+        string playerPos = "Player pos: " + PlayerCellPosition.x + " " + PlayerCellPosition.y;
         // GUI.Box(new Rect(10, 30, 100, 20), "Room level: " + CurrentRoomLevel);
-        // GUILayout.Box(playerPos, GUILayout.Width(100), GUILayout.Height(20),);
+        GUILayout.Box(playerPos, GUILayout.Width(100), GUILayout.Height(20));
     }
 
 
