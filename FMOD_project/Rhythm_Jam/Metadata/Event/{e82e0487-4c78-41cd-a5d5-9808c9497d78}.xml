@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="Event" id="{e82e0487-4c78-41cd-a5d5-9808c9497d78}">
 		<property name="name">
-			<value>ping_me</value>
+			<value>cue</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -75,12 +75,10 @@
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{2bc0316e-0f8d-4967-b882-c038d9fe2f9c}">
-		<property name="start">
-			<value>0.5</value>
-		</property>
 		<property name="length">
 			<value>0.34988662131519277</value>
 		</property>
+		<property name="name" />
 		<relationship name="audioFile">
 			<destination>{81d02cb6-9c0e-405f-836b-32cdeb113547}</destination>
 		</relationship>
