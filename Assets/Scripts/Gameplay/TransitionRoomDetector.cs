@@ -34,7 +34,7 @@ public class TransitionRoomDetector : MonoBehaviour
 
         if (_beatCount == _beatCountToTransition)
         {
-            FMODUnity.RuntimeManager.PlayOneShot("event:/ping_me");
+            FMODUnity.RuntimeManager.PlayOneShot("event:/cue");
         }
 
         if (_beatCount == _beatCountToTransition - 1)
