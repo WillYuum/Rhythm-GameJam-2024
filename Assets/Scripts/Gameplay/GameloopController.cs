@@ -10,6 +10,9 @@ public class GameloopController : MonoBehaviour
     private InputManager _inputManager;
     private RhythmController _rhythmController;
     private int _currentRoomLevel;
+
+    private MainGameUI _mainGameUI;
+
     public int CurrentRoomLevel
     {
         get => _currentRoomLevel;
@@ -33,6 +36,7 @@ public class GameloopController : MonoBehaviour
         _selectedGrid = FindObjectOfType<GridController>();
         _player = FindObjectOfType<Player>();
         _rhythmController = FindObjectOfType<RhythmController>();
+        _mainGameUI = FindObjectOfType<MainGameUI>();
     }
 
 
@@ -152,5 +156,6 @@ public class GameloopController : MonoBehaviour
         _gameIsActive = false;
         _inputManager.Toggle(false);
         _rhythmController.ToggleMusic(false);
+        _mainGameUI.ShowEndGameScreen();
     }
 }
