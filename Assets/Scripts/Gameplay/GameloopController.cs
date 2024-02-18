@@ -150,6 +150,21 @@ public class GameloopController : MonoBehaviour
     }
 
 
+    public void AfterEnemyMove(EnemyFollowAndDance enemy)
+    {
+        if (!_gameIsActive)
+            return;
+
+        Vector2Int enemyCellPos = _selectedGrid.GetCellPosFromWorldPos(enemy.transform.position);
+        if (enemyCellPos == PlayerCellPosition)
+        {
+            Debug.Log("Player got caught by enemy");
+            CurrentRoomLevel--;
+            _selectedGrid.BuildUpObjectsInRoom(CurrentRoomLevel);
+        }
+    }
+
+
 
     private void WinGame()
     {

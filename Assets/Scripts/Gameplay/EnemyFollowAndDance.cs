@@ -15,6 +15,14 @@ public class EnemyFollowAndDance : MonoBehaviour
 
     private Transform _target;
 
+    private GameloopController _gameloopController;
+
+
+    void Awake()
+    {
+        _gameloopController = FindObjectOfType<GameloopController>();
+    }
+
     private void Start()
     {
         // Initialize dance steps
@@ -27,6 +35,11 @@ public class EnemyFollowAndDance : MonoBehaviour
 
         _target = FindObjectOfType<Player>().transform;
 
+    }
+
+    void OnDestroy()
+    {
+        _musicTracker.fixedBeatUpdate -= HandleBeat;
     }
 
 
@@ -145,6 +158,8 @@ public class EnemyFollowAndDance : MonoBehaviour
     {
         Debug.Log("|Enemy| Moving to " + nextPos);
         transform.position = _gridController.GetWorldPosFromCellPos(nextPos);
+
+        _gameloopController.AfterEnemyMove(this);
     }
 
 
