@@ -112,6 +112,7 @@ public class GameloopController : MonoBehaviour
         _player.UpdatePosition(newWorldPos);
     }
 
+#if UNITY_EDITOR
     private void OnGUI()
     {
         //draw the player pos
@@ -121,6 +122,7 @@ public class GameloopController : MonoBehaviour
         // GUI.Box(new Rect(10, 30, 100, 20), "Room level: " + CurrentRoomLevel);
         GUILayout.Box(playerPos, GUILayout.Width(100), GUILayout.Height(20));
     }
+#endif
 
 
     private void HandlePlayerClickTransition()

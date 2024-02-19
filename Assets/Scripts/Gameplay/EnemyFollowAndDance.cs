@@ -43,7 +43,7 @@ public class EnemyFollowAndDance : MonoBehaviour
     }
 
 
-
+#if UNITY_EDITOR
     private void OnGUI()
     {
         // GUILayoutOption
@@ -51,6 +51,7 @@ public class EnemyFollowAndDance : MonoBehaviour
         GUILayout.Box("isDancing: " + _isDancing, GUILayout.Width(100), GUILayout.Height(20));
 
     }
+#endif
 
 
     private MusicTracker _musicTracker;
