@@ -1,25 +1,31 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utils.GenericSingletons;
 public class GameManager : MonoBehaviourSingleton<MonoBehaviour>
 {
-    [SerializeField] private FMODUnity.StudioBankLoader _bankLoader;
-
-
     public event System.Action OnCloseGame;
 
 
     private GameStarter _gameStarter;
-    private void Awake()
+
+    private void Start()
     {
+
         _gameStarter = new GameStarter();
 
-        StartCoroutine(CheckIfBanksLoaded(_gameStarter.StartGame));
+        MainGameUI mainGameUI = FindObjectOfType<MainGameUI>();
+        LoadingScreen.LoadUI loadingScreen = mainGameUI.LoadLoadingScreen();
+
+        loadingScreen.Open.Invoke();
+
+        StartCoroutine(CheckIfBanksLoaded(() =>
+        {
+            loadingScreen.Close.Invoke();
+            _gameStarter.StartGame();
+        }));
     }
+
 
 
     private IEnumerator CheckIfBanksLoaded(System.Action callback)
@@ -27,6 +33,9 @@ public class GameManager : MonoBehaviourSingleton<MonoBehaviour>
         string bankName = "Master";
         yield return new WaitUntil(() => FMODUnity.RuntimeManager.HasBankLoaded(bankName));
         Debug.Log("|GameManager|: Bank loaded: " + bankName);
+
+        //add minor delay:
+        yield return new WaitForSeconds(2f);
 
         callback.Invoke();
     }
