@@ -13,15 +13,6 @@ public class GameloopController : MonoBehaviour
 
     private MainGameUI _mainGameUI;
 
-    public int CurrentRoomLevel
-    {
-        get => _currentRoomLevel;
-        set
-        {
-            _currentRoomLevel = value;
-            _rhythmController.SetCurrentLayer(value);
-        }
-    }
 
     private GridController _selectedGrid;
 
@@ -52,7 +43,16 @@ public class GameloopController : MonoBehaviour
 
     private void Update()
     {
-
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            GoToRoom(_selectedGrid.CurrentRoomData.RoomNumber + 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.I))
+        {
+            GoToRoom(_selectedGrid.CurrentRoomData.RoomNumber - 1);
+        }
+#endif
     }
 
     public void StartLoop()
@@ -72,9 +72,8 @@ public class GameloopController : MonoBehaviour
 
         _rhythmController.LoadMusic();
         _rhythmController.ToggleMusic(true);
-        CurrentRoomLevel = 1;
 
-        _selectedGrid.BuildUpObjectsInRoom(CurrentRoomLevel);
+        GoToRoom(1);
     }
 
 
@@ -112,60 +111,51 @@ public class GameloopController : MonoBehaviour
         _player.UpdatePosition(newWorldPos);
     }
 
-#if UNITY_EDITOR
-    private void OnGUI()
-    {
-        //draw the player pos
-        // GUI.Label(new Rect(10, 10, 100, 20), "Player pos: " + PlayerCellPosition.x + " " + PlayerCellPosition.y);
-
-        string playerPos = "Player pos: " + PlayerCellPosition.x + " " + PlayerCellPosition.y;
-        // GUI.Box(new Rect(10, 30, 100, 20), "Room level: " + CurrentRoomLevel);
-        GUILayout.Box(playerPos, GUILayout.Width(100), GUILayout.Height(20));
-    }
-#endif
-
 
     private void HandlePlayerClickTransition()
     {
         if (!_gameIsActive)
             return;
 
-
         TransitionRoomDetector transitionRoomDetector = _rhythmController.GetComponent<TransitionRoomDetector>();
 
-        if (transitionRoomDetector.CheckIfOnTransitionBeat() && CheckIfPlayerIsOnExitDoor())
+        if (transitionRoomDetector.CheckIfOnTransitionBeat() && CheckIfPlayerIsOnExitDoor(out int roomNumber))
         {
-            //Handle logic for checking if player clicked near beat when transition queue is played
-            // Debug.Break();
-            CurrentRoomLevel++;
-
-
-            bool currentRoomIsLast = _selectedGrid.CurrentRoomIsLastRoom(CurrentRoomLevel);
-            if (currentRoomIsLast)
+            if (_selectedGrid.NextRoomIsEndGame())
             {
                 Debug.Log("Last room");
                 WinGame();
             }
             else
             {
-                _selectedGrid.BuildUpObjectsInRoom(CurrentRoomLevel);
+                GoToRoom(roomNumber);
             }
+
         }
     }
 
-
-    private bool CheckIfPlayerIsOnExitDoor()
+    private void GoToRoom(int roomNumber)
     {
+        _selectedGrid.BuildUpObjectsInRoom(roomNumber);
+        _rhythmController.SetCurrentLayer(roomNumber);
+
+    }
+
+
+    private bool CheckIfPlayerIsOnExitDoor(out int roomNumber)
+    {
+        roomNumber = -1;
         if (!_gameIsActive)
             return false;
 
         Vector2Int playerCellPos = PlayerCellPosition;
 
-        for (int i = 0; i < _selectedGrid.CurrentRoomData.DoorsToExitPositions.Length; i++)
+        for (int i = 0; i < _selectedGrid.CurrentRoomData.ExitDoors.Length; i++)
         {
-            Vector2Int exitDoorPos = _selectedGrid.CurrentRoomData.DoorsToExitPositions[i];
+            Vector2Int exitDoorPos = _selectedGrid.CurrentRoomData.ExitDoors[i].Position;
             if (playerCellPos == exitDoorPos)
             {
+                roomNumber = _selectedGrid.CurrentRoomData.ExitDoors[i].RoomNumber;
                 return true;
             }
         }
@@ -184,8 +174,8 @@ public class GameloopController : MonoBehaviour
         if (enemyCellPos == PlayerCellPosition)
         {
             Debug.Log("Player got caught by enemy");
-            CurrentRoomLevel--;
-            _selectedGrid.BuildUpObjectsInRoom(CurrentRoomLevel);
+
+            GoToRoom(_selectedGrid.PrevRoomData.RoomNumber);
         }
     }
 

@@ -7,11 +7,13 @@ public class GridController : MonoBehaviour
 {
     [SerializeField] private Tilemap _activeTilemap;
     private RoomSpawnManager _roomSpawnManager;
-    public RoomsData.RoomData CurrentRoomData { get; private set; }
+    public RoomsData.Config CurrentRoomData { get; private set; }
+    public RoomsData.Config PrevRoomData { get; private set; }
 
     [SerializeField] private Transform _spawnedObjectsParent;
 
     private RoomsData _roomsData;
+
 
 
     private void Awake()
@@ -37,10 +39,10 @@ public class GridController : MonoBehaviour
     }
 
 
-    public bool CurrentRoomIsLastRoom(int currentRoomNumber)
+    public bool NextRoomIsEndGame()
     {
-        int roomIndex = currentRoomNumber - 1;
-        return roomIndex == _roomsData.AllRooms.Length;
+        //For now room 12 is the end game room 
+        return CurrentRoomData.RoomNumber == 12;
     }
 
 
@@ -52,12 +54,6 @@ public class GridController : MonoBehaviour
             Debug.LogError("|GridController| Room index out of bounds");
             return;
         }
-
-        if (CurrentRoomIsLastRoom(roomNumber))
-        {
-            return;
-        }
-
 
         ClearCreateObjectsOnGrid();
 
@@ -71,12 +67,12 @@ public class GridController : MonoBehaviour
 
         MusicTracker musicTracker = FindObjectOfType<MusicTracker>();
 
-        if (roomData.DoorsToExitPositions != null)
+        if (roomData.ExitDoors != null)
         {
-            foreach (Vector2Int doorPos in roomData.DoorsToExitPositions)
+            foreach (var doorData in roomData.ExitDoors)
             {
-                Debug.Log($"Door at {doorPos}");
-                doorPrefab.CreateGameObject(_activeTilemap.GetWorldPosFromCellPos(doorPos), Quaternion.identity, _spawnedObjectsParent);
+                Debug.Log($"Door at {doorData.Position}");
+                doorPrefab.CreateGameObject(_activeTilemap.GetWorldPosFromCellPos(doorData.Position), Quaternion.identity, _spawnedObjectsParent);
 
             }
         }
@@ -100,8 +96,10 @@ public class GridController : MonoBehaviour
             }
         }
 
+        PrevRoomData = CurrentRoomData;
         CurrentRoomData = roomData;
     }
+
 
 
     private void ClearCreateObjectsOnGrid()
@@ -119,40 +117,210 @@ public class GridController : MonoBehaviour
 
 public class RoomsData
 {
-    public struct RoomData
+    public class Config
     {
-        public Vector2Int[] DoorsToExitPositions;
+        public int RoomNumber;
+        public int MusicLayer = -1;
+        public ExitDoor[] ExitDoors;
         public Vector2Int[] EnemyPositions;
         public Vector2Int[] ObstaclePositions;
     }
 
-    public RoomData[] AllRooms { get; private set; }
+    public class ExitDoor
+    {
+        public Vector2Int Position;
+        public int RoomNumber;
+
+        public ExitDoor(Vector2Int position, int roomNumber)
+        {
+            Position = position;
+            RoomNumber = roomNumber;
+        }
+    }
+
+    public Config[] AllRooms { get; private set; }
 
     public RoomsData()
     {
-        AllRooms = new RoomData[]{
+        AllRooms = new Config[]{
+            // Room 1
             new () {
-                DoorsToExitPositions = new Vector2Int[]{
-                    new Vector2Int(-2, 0)
+                RoomNumber = 1,
+                MusicLayer = 1,
+                ExitDoors = new ExitDoor[]{
+                    new(new Vector2Int(-2, 0), 2),
+
                 },
                 EnemyPositions = null,
                 ObstaclePositions = null,
             },
+            // Room 2
             new()
             {
-                DoorsToExitPositions = new Vector2Int[]{
-                    new Vector2Int(-2, -2)
+                RoomNumber = 2,
+                MusicLayer = 2,
+                ExitDoors = new ExitDoor[]{
+                   new( new Vector2Int(-2, -2), 3)
+                },
+                EnemyPositions = null,
+                ObstaclePositions = null,
+            },
+            // Room 3
+            new()
+            {
+                RoomNumber = 3,
+                MusicLayer = 3,
+                ExitDoors = new ExitDoor[]{
+                    new(new Vector2Int(-2, -2), 4)
                 },
                 EnemyPositions = new Vector2Int[]
                 {
-                    new Vector2Int(0, 3)
+                    new Vector2Int(0, 2)
                 },
                 ObstaclePositions = null,
+            },
+            //Room 4
+            new()
+            {
+                RoomNumber = 4,
+                MusicLayer = 4,
+                ExitDoors = new ExitDoor[]{
+                   new( new Vector2Int(0, 2), 6),
+                   new( new Vector2Int(-2, 2), 5),
+                },
+                EnemyPositions = null,
+                ObstaclePositions = null,
+            },
+            //Room 5
+            new()
+            {
+                RoomNumber = 5,
+                ExitDoors = null,
+                EnemyPositions = new Vector2Int[]
+                {
+                    new Vector2Int(-2, -2)
+                },
+                ObstaclePositions = null,
+            },
+            //Room 6
+            new()
+            {
+                RoomNumber = 6,
+                MusicLayer = 5,
+                ExitDoors = new ExitDoor[]{
+                   new( new Vector2Int(2, 0), 8),
+                   new( new Vector2Int(0, 2), 7),
+                },
+                EnemyPositions = new Vector2Int[]
+                {
+                    new Vector2Int(-2, -2)
+                },
+                ObstaclePositions = null,
+            },
+            //Room 7
+            new()
+            {
+                RoomNumber = 7,
+                ExitDoors = new ExitDoor[]{
+                   new( new Vector2Int(-2, -2), 3)
+                },
+                EnemyPositions = new Vector2Int[]
+                {
+                    new Vector2Int(-2, -2)
+                },
+                ObstaclePositions = null,
+            },
+            //Room 8
+            new()
+            {
+                RoomNumber = 8,
+                MusicLayer = 6,
+                ExitDoors = new ExitDoor[]{
+                   new( new Vector2Int(0, 2), 9)
+                },
+                EnemyPositions = new Vector2Int[]
+                {
+                    new Vector2Int(-2, -2)
+                },
+                ObstaclePositions = new Vector2Int[]
+                {
+                    new Vector2Int(0, 1),
+                }
+            },
+            //Room 9
+            new()
+            {
+                RoomNumber = 9,
+                MusicLayer = 7,
+                ExitDoors = new ExitDoor[]{
+                   new( new Vector2Int(2, 0), 12),
+                   new( new Vector2Int(0, 2), 10),
+                   new( new Vector2Int(0, -2),11),
+                },
+                EnemyPositions = new Vector2Int[]
+                {
+                    new Vector2Int(-2, -2),
+                    new Vector2Int(-1, -1),
+                },
+                ObstaclePositions = new Vector2Int[]
+                {
+                    new Vector2Int(0, 1),
+                }
+            },
+            //Room 10
+            new()
+            {
+                RoomNumber = 10,
+                ExitDoors = null,
+                EnemyPositions = new Vector2Int[]
+                {
+                    new Vector2Int(-2, -2),
+                },
+                ObstaclePositions = new Vector2Int[]
+                {
+                    new Vector2Int(0, 1),
+                    new Vector2Int(1, 0),
+                }
+            },
+            //Room 11
+            new()
+            {
+                RoomNumber = 11,
+                ExitDoors = null,
+                EnemyPositions = new Vector2Int[]
+                {
+                    new Vector2Int(-2, -2),
+                    new Vector2Int(2, 2),
+                },
+                ObstaclePositions = new Vector2Int[]
+                {
+                    new Vector2Int(0, 1),
+                }
+            },
+            //Room 12
+            new()
+            {
+                RoomNumber = 12,
+                MusicLayer = 8,
+                ExitDoors = new ExitDoor[]{
+                   new( new Vector2Int(0, -2), -420)
+                },
+                EnemyPositions = new Vector2Int[]
+                {
+                    new Vector2Int(-2, 2),
+                    new Vector2Int(2, 2),
+                },
+                ObstaclePositions = new Vector2Int[]
+                {
+                    new Vector2Int(1, 0),
+                    new Vector2Int(0, 1),
+                    new Vector2Int(1, 1),
+                }
             },
         };
     }
 
-    public RoomData GetRoomData(int index)
+    public Config GetRoomData(int index)
     {
         return AllRooms[index];
     }
