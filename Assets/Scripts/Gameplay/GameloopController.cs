@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using DG.Tweening;
 using GameplayUtils;
 using UnityEngine;
@@ -9,12 +8,14 @@ public class GameloopController : MonoBehaviour
     public Vector2Int PlayerCellPosition;
     private InputManager _inputManager;
     private RhythmController _rhythmController;
-    private int _currentRoomLevel;
-
     private MainGameUI _mainGameUI;
 
+    private RoomsData _roomsData;
 
-    private GridController _selectedGrid;
+    public RoomsData.Config PrevRoomData { get; private set; }
+
+
+    private GridController _currentActiveRoom;
 
     private Player _player;
 
@@ -24,7 +25,7 @@ public class GameloopController : MonoBehaviour
     private void Awake()
     {
         _inputManager = FindObjectOfType<InputManager>();
-        _selectedGrid = FindObjectOfType<GridController>();
+        _currentActiveRoom = FindObjectOfType<GridController>();
         _player = FindObjectOfType<Player>();
         _rhythmController = FindObjectOfType<RhythmController>();
         _mainGameUI = FindObjectOfType<MainGameUI>();
@@ -37,7 +38,7 @@ public class GameloopController : MonoBehaviour
 
 
         // Tilemap currentTileMap = _mapSwitcher.GetActiveMap();
-        Vector2 newWorldPos = _selectedGrid.GetWorldPosFromCellPos(PlayerCellPosition);
+        Vector2 newWorldPos = _currentActiveRoom.GetWorldPosFromCellPos(PlayerCellPosition);
         _player.UpdatePosition(newWorldPos);
     }
 
@@ -46,11 +47,11 @@ public class GameloopController : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.U))
         {
-            GoToRoom(_selectedGrid.CurrentRoomData.RoomNumber + 1);
+            TransitionToRoom(_currentActiveRoom.Data.RoomNumber + 1);
         }
         else if (Input.GetKeyDown(KeyCode.I))
         {
-            GoToRoom(_selectedGrid.CurrentRoomData.RoomNumber - 1);
+            TransitionToRoom(_currentActiveRoom.Data.RoomNumber - 1);
         }
 #endif
     }
@@ -65,6 +66,8 @@ public class GameloopController : MonoBehaviour
 
         print("|GameLoopController| Starting game loop");
 
+        _roomsData = new RoomsData();
+
         _gameIsActive = true;
         _inputManager.OnMoveInput += MovePlayer;
         _inputManager.OnClickTransition += HandlePlayerClickTransition;
@@ -73,7 +76,7 @@ public class GameloopController : MonoBehaviour
         _rhythmController.LoadMusic();
         _rhythmController.ToggleMusic(true);
 
-        GoToRoom(1);
+        TransitionToRoom(1);
     }
 
 
@@ -98,7 +101,7 @@ public class GameloopController : MonoBehaviour
 
         Debug.Log("Moving to " + newCellPos);
 
-        if (_selectedGrid.CheckIfCanMoveToPosition(newCellPos))
+        if (_currentActiveRoom.CheckIfCanMoveToPosition(newCellPos))
         {
             Debug.Log("Can't move to " + newCellPos);
             return;
@@ -107,7 +110,7 @@ public class GameloopController : MonoBehaviour
 
         PlayerCellPosition = newCellPos;
 
-        Vector2 newWorldPos = _selectedGrid.GetWorldPosFromCellPos(newCellPos);
+        Vector2 newWorldPos = _currentActiveRoom.GetWorldPosFromCellPos(newCellPos);
         _player.UpdatePosition(newWorldPos);
     }
 
@@ -121,25 +124,41 @@ public class GameloopController : MonoBehaviour
 
         if (transitionRoomDetector.CheckIfOnTransitionBeat() && CheckIfPlayerIsOnExitDoor(out int roomNumber))
         {
-            if (_selectedGrid.NextRoomIsEndGame())
+            //For now room 12 is the end game room 
+            bool nextRoomIsEndGame = _currentActiveRoom.Data.RoomNumber == 12;
+            if (nextRoomIsEndGame)
             {
                 Debug.Log("Last room");
                 WinGame();
             }
             else
             {
-                GoToRoom(roomNumber);
+                TransitionToRoom(roomNumber);
             }
 
         }
     }
 
-    private void GoToRoom(int roomNumber)
+    private void TransitionToRoom(int roomNumber)
     {
-        _selectedGrid.BuildUpObjectsInRoom(roomNumber);
+        Debug.Log("Transitioning to room " + roomNumber);
+
+        int roomIndex = roomNumber - 1;
+        RoomsData.Config roomData = _roomsData.GetRoomData(roomIndex);
+
+        PrevRoomData = _currentActiveRoom.Data;
+
+        var newRoom = Instantiate(_currentActiveRoom, Vector2.zero, Quaternion.identity).GetComponent<GridController>();
+
+        Destroy(_currentActiveRoom.gameObject);
+
+        newRoom.ConstructRoom(roomData);
         _rhythmController.SetCurrentLayer(roomNumber);
 
+
+        _currentActiveRoom = newRoom;
     }
+
 
 
     private bool CheckIfPlayerIsOnExitDoor(out int roomNumber)
@@ -149,13 +168,14 @@ public class GameloopController : MonoBehaviour
             return false;
 
         Vector2Int playerCellPos = PlayerCellPosition;
+        RoomsData.Config currentRoomData = _currentActiveRoom.Data;
 
-        for (int i = 0; i < _selectedGrid.CurrentRoomData.ExitDoors.Length; i++)
+        for (int i = 0; i < currentRoomData.ExitDoors.Length; i++)
         {
-            Vector2Int exitDoorPos = _selectedGrid.CurrentRoomData.ExitDoors[i].Position;
+            Vector2Int exitDoorPos = currentRoomData.ExitDoors[i].Position;
             if (playerCellPos == exitDoorPos)
             {
-                roomNumber = _selectedGrid.CurrentRoomData.ExitDoors[i].RoomNumber;
+                roomNumber = currentRoomData.ExitDoors[i].RoomNumber;
                 return true;
             }
         }
@@ -170,12 +190,12 @@ public class GameloopController : MonoBehaviour
         if (!_gameIsActive)
             return;
 
-        Vector2Int enemyCellPos = _selectedGrid.GetCellPosFromWorldPos(enemy.transform.position);
+        Vector2Int enemyCellPos = _currentActiveRoom.GetCellPosFromWorldPos(enemy.transform.position);
         if (enemyCellPos == PlayerCellPosition)
         {
             Debug.Log("Player got caught by enemy");
 
-            GoToRoom(_selectedGrid.PrevRoomData.RoomNumber);
+            TransitionToRoom(PrevRoomData.RoomNumber);
         }
     }
 
