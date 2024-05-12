@@ -34,7 +34,7 @@ public class RoomsData
                 RoomNumber = 1,
                 MusicLayer = 1,
                 ExitDoors = new ExitDoor[]{
-                    new(new Vector2Int(-2, 0), 2),
+                    new(new Vector2Int(0, -2), 2),
 
                 },
                 EnemyPositions = null,
@@ -46,7 +46,7 @@ public class RoomsData
                 RoomNumber = 2,
                 MusicLayer = 2,
                 ExitDoors = new ExitDoor[]{
-                   new( new Vector2Int(-2, -2), 3)
+                   new( new Vector2Int(0, -2), 3)
                 },
                 EnemyPositions = null,
                 ObstaclePositions = null,
@@ -57,7 +57,7 @@ public class RoomsData
                 RoomNumber = 3,
                 MusicLayer = 3,
                 ExitDoors = new ExitDoor[]{
-                    new(new Vector2Int(-2, -2), 4)
+                    new(new Vector2Int(0, -2), 4)
                 },
                 EnemyPositions = new Vector2Int[]
                 {
@@ -71,8 +71,8 @@ public class RoomsData
                 RoomNumber = 4,
                 MusicLayer = 4,
                 ExitDoors = new ExitDoor[]{
-                   new( new Vector2Int(0, 2), 6),
-                   new( new Vector2Int(-2, 2), 5),
+                   new( new Vector2Int(2, 0), 6),
+                   new( new Vector2Int(0, -2), 5),
                 },
                 EnemyPositions = null,
                 ObstaclePositions = null,
@@ -94,8 +94,8 @@ public class RoomsData
                 RoomNumber = 6,
                 MusicLayer = 5,
                 ExitDoors = new ExitDoor[]{
-                   new( new Vector2Int(2, 0), 8),
-                   new( new Vector2Int(0, 2), 7),
+                   new( Vector2Int.right, 8),
+                   new( Vector2Int.up, 7),
                 },
                 EnemyPositions = new Vector2Int[]
                 {
@@ -108,7 +108,7 @@ public class RoomsData
             {
                 RoomNumber = 7,
                 ExitDoors = new ExitDoor[]{
-                   new( new Vector2Int(-2, -2), 3)
+                   new(  Vector2Int.left, 3)
                 },
                 EnemyPositions = new Vector2Int[]
                 {
@@ -122,7 +122,7 @@ public class RoomsData
                 RoomNumber = 8,
                 MusicLayer = 6,
                 ExitDoors = new ExitDoor[]{
-                   new( new Vector2Int(0, 2), 9)
+                   new( Vector2Int.right, 9)
                 },
                 EnemyPositions = new Vector2Int[]
                 {
@@ -139,9 +139,9 @@ public class RoomsData
                 RoomNumber = 9,
                 MusicLayer = 7,
                 ExitDoors = new ExitDoor[]{
-                   new( new Vector2Int(2, 0), 12),
-                   new( new Vector2Int(0, 2), 10),
-                   new( new Vector2Int(0, -2),11),
+                   new( Vector2Int.right, 12),
+                   new( Vector2Int.up, 10),
+                   new( Vector2Int.down,11),
                 },
                 EnemyPositions = new Vector2Int[]
                 {
